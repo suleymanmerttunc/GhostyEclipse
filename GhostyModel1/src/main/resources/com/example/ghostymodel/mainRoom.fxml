@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ghostymodel.MainRoomController">
+   <children>
+      <BorderPane prefHeight="700.0" prefWidth="1000.0">
+         <top>
+            <HBox prefHeight="35.0" prefWidth="900.0" style="-fx-background-color: #3F2D56;" BorderPane.alignment="CENTER" />
+         </top>
+         <left>
+            <VBox prefHeight="565.0" prefWidth="225.0" style="-fx-background-color: #5A3F7F;" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="612.0" prefWidth="225.0">
+                     <children>
+                        <ImageView fitHeight="83.0" fitWidth="85.0" layoutX="18.0" layoutY="36.0" opacity="0.96" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/ghosty.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="88.0" layoutY="47.0" opacity="0.91" prefHeight="60.0" prefWidth="145.0" text="Ghosty" textFill="WHITE">
+                           <font>
+                              <Font name="Calibri Bold" size="42.0" />
+                           </font>
+                        </Label>
+                        <Text fill="#bfbebe" layoutX="14.0" layoutY="247.0" opacity="0.76" strokeType="OUTSIDE" strokeWidth="0.0" text="TREND ROOMS" wrappingWidth="83.13671875">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Text>
+                        <HBox layoutY="257.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                           <children>
+                              <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="4.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Label fx:id="firstText" onMouseClicked="#lobbyClicked" prefHeight="28.0" prefWidth="191.0" text="firstTrendTopic" textFill="#a1a1a1">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="2.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox layoutY="289.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                           <children>
+                              <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="4.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Label fx:id="secondText" onMouseClicked="#lobbyClicked" prefHeight="28.0" prefWidth="193.0" text="secondTrendTopic" textFill="#a1a1a1">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="2.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox layoutY="321.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                           <children>
+                              <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="4.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Label fx:id="thirdText" onMouseClicked="#lobbyClicked" prefHeight="28.0" prefWidth="196.0" text="thirdTrendTopic" textFill="#a1a1a1">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="2.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox layoutY="353.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                           <children>
+                              <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="4.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Label fx:id="fourthText" onMouseClicked="#lobbyClicked" prefHeight="28.0" prefWidth="195.0" text="fourthTrendTopic" textFill="#a1a1a1">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="2.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Text fill="#bfbebe" layoutX="18.0" layoutY="411.0" opacity="0.76" strokeType="OUTSIDE" strokeWidth="0.0" text="1ON1 &amp; GROUP CHAT" wrappingWidth="155.13671875">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Text>
+                        <ToggleButton layoutX="14.0" layoutY="139.0" mnemonicParsing="false" onMouseClicked="#createNewRoom" prefHeight="34.0" prefWidth="192.0" style="-fx-background-color: #40E0D0;" text="  1ON1 &amp; GROUP CHAT           ➕" textFill="WHITE" />
+                        <ToggleButton layoutX="14.0" layoutY="185.0" mnemonicParsing="false" onMouseClicked="#deleteSelectedRoom" prefHeight="34.0" prefWidth="192.0" style="-fx-background-color: #1DA1F2;" text="  1ON1 &amp; GROUP CHAT           −" textFill="WHITE" />
+                        <ListView fx:id="userCreatedRoomList" layoutX="13.0" layoutY="424.0" prefHeight="181.0" prefWidth="200.0" styleClass="setStyle" stylesheets="@mert.css" />
+                     </children>
+                  </Pane>
+                  <HBox prefHeight="57.0" prefWidth="225.0" style="-fx-background-color: #4D366B;">
+                     <children>
+                        <Pane prefHeight="56.0" prefWidth="225.0">
+                           <children>
+                              <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="22.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/bosFoto.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="welcomeLabel" layoutX="67.0" layoutY="18.0" opacity="0.75" prefHeight="27.0" prefWidth="96.0" text="yourUsername" textFill="WHITE">
+                                 <padding>
+                                    <Insets right="10.0" top="4.0" />
+                                 </padding>
+                              </Label>
+                              <Text fill="#b9b9b9" layoutX="63.0" layoutY="22.0" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" textAlignment="CENTER" wrappingWidth="62.13671875" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <Pane prefHeight="665.0" prefWidth="767.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="100.0" prefWidth="774.0" style="-fx-background-color: white;">
+                     <children>
+                        <Separator layoutY="102.0" prefHeight="0.0" prefWidth="775.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

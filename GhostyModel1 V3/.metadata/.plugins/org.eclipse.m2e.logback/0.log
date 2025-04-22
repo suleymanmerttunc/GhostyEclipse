@@ -1,0 +1,13 @@
+2025-04-20 16:09:11,981 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is not available. Remote download required.
+2025-04-20 16:12:00,231 [Worker-25: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.example:GhostyModel1:1.0-SNAPSHOT @ C:\Users\MERT TUNÇ\git\GhostyEclipse\GhostyModel1\pom.xml.
+2025-04-20 16:12:00,247 [Worker-25: Building] WARN  o.a.m.r.i.DefaultArtifactDescriptorReader - 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:21 during dependency collection step for project (use -X to see details)
+2025-04-20 16:12:01,069 [Worker-25: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 9 resources from src\main\resources to target\classes
+2025-04-20 16:12:01,097 [Worker-25: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\MERT TUNÇ\git\GhostyEclipse\GhostyModel1\src\test\resources
+2025-04-20 16:12:01,737 [Worker-10: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.example:GhostyModel1:1.0-SNAPSHOT @ C:\Users\MERT TUNÇ\git\GhostyEclipse\GhostyModel1\pom.xml.
+2025-04-20 16:12:01,744 [Worker-10: Updating Maven Dependencies] WARN  o.a.m.r.i.DefaultArtifactDescriptorReader - 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:21 during dependency collection step for project (use -X to see details)
+2025-04-20 16:12:02,549 [Worker-21: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 9 resources from src\main\resources to target\classes
+2025-04-20 16:12:02,571 [Worker-21: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\MERT TUNÇ\git\GhostyEclipse\GhostyModel1\src\test\resources
+2025-04-20 16:16:10,362 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 9 resources from src\main\resources to target\classes
+2025-04-20 16:16:10,371 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\MERT TUNÇ\git\GhostyEclipse\GhostyModel1\src\test\resources
+2025-04-20 16:19:20,166 [Worker-31: Launching Main] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 9 resources from src\main\resources to target\classes
+2025-04-20 16:19:20,174 [Worker-31: Launching Main] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\MERT TUNÇ\git\GhostyEclipse\GhostyModel1\src\test\resources

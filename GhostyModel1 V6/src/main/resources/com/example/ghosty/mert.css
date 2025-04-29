@@ -1,0 +1,23 @@
+.hover-effect {
+    -fx-background-color: transparent; /* Normal durumda şeffaf */
+    -fx-background-insets: 0;
+    -fx-border-radius: 5;
+}
+
+.hover-effect:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1); /* Üzerine gelindiğinde renk değişikliği */
+}
+
+
+.button-with-border {
+    -fx-border-color: #DCDCDC; /* Kenarlık rengi */
+    -fx-border-width: 1px;   /* Kenarlık genişliği */
+    -fx-border-radius: 2px;  /* Kenarlık yuvarlaklığı (isteğe bağlı) */
+    -fx-padding: 4px;       /* Buton içeriğine boşluk */
+}
+
+.setStyle{
+    -fx-background-color:#5A3F7F;
+}
+
+

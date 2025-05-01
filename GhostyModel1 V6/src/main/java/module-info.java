@@ -2,6 +2,8 @@ module com.example.ghosty {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.jsoup;
+	requires java.desktop;
+	requires javafx.graphics;
 
 
     opens com.example.ghosty to javafx.fxml;

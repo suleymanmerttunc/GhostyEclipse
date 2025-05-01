@@ -45,6 +45,7 @@ public class MainGUI {
     private VBox messageBox;
     private Client client;
     private RoomList roomList;
+    public final int roomLimit = 9;
 
     @FXML private ScrollPane scrollPane;
 
@@ -114,6 +115,7 @@ public class MainGUI {
             int deleteIndex = Integer.parseInt(deleteResult.get());
             labels.get(deleteIndex).setText("");
             rooms.remove(deleteIndex);
+
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -128,7 +130,7 @@ public class MainGUI {
     @FXML
     public void createRooms(MouseEvent event) {
         // Eğer oda zaten oluşturulmuşsa boş değilse uyarı ver
-        if ((rooms.size() > 4)) {
+        if ((rooms.size() > roomLimit)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Sınır Aşıldı");
             alert.setHeaderText(null);
@@ -178,10 +180,10 @@ public class MainGUI {
     }
 
     public void listRoomNames(List<Room> rooms) {
-        for (int i = 0; i < rooms.size(); i++) {
+        for (int i = 4; i < rooms.size(); i++) {
             int index = i;
         	Platform.runLater(() -> {
-        		labels.get(index).setText(rooms.get(index).getName());
+        		labels.get(index-4).setText(rooms.get(index).getName());
         	    
         	});
 
@@ -247,7 +249,6 @@ public class MainGUI {
 	}
 
 
-<<<<<<< HEAD
     // Daha sonra bak
     @FXML
     public void joinRoom(MouseEvent event){
@@ -268,8 +269,5 @@ public class MainGUI {
     }
 
 
-
-=======
->>>>>>> 08d00e8e44a90a2ae39fa8e72dbfccae841eb4cc
 
 }

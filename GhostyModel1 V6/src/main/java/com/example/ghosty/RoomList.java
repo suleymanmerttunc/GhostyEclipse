@@ -35,6 +35,11 @@ public class RoomList {
         notifyObservers();  // Notify all clients about the new room
     }
 
+    public void removeRoom(Room room) 
+    {
+    	rooms.remove(room);
+    	notifyObservers();
+    }
     // Get all rooms
     public List<Room> getRooms() {
         return rooms;

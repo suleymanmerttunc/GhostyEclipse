@@ -38,20 +38,30 @@ public class MainGUI {
     @FXML
     private Button sendButton;
     @FXML
+    private Button goBackLobby;
+    @FXML
+    private Button joinRoom;
+    @FXML
     private VBox messageBox;
+    private Client client;
+    private RoomList roomList;
 
     @FXML private ScrollPane scrollPane;
 
-    ArrayList<Room> rooms = new ArrayList<>();
+    List<Room> rooms = new ArrayList<>();
     List<Label> labels = new ArrayList<>();
 
 
     public void initialize() {
-
+    	this.client = new Client(this);
+    	roomList = new RoomList();
+    	roomList.addObserver(this);
+    	
         labels = Arrays.asList(roomLabel1, roomLabel2, roomLabel3, roomLabel4, roomLabel5);
+        
         new Thread(() -> {
             try {
-                String[] trends = getTopTrends();
+                String[] trends = UtilFunctions.getTopTrends();
 
                 Platform.runLater(() -> {
                     firstText.setText(trends[0]);
@@ -59,30 +69,30 @@ public class MainGUI {
                     thirdText.setText(trends[2]);
                     fourthText.setText(trends[3]);
                 });
+                String[] portList = {"9999","9998","9997","9996"};
+               for (int i = 0; i < 4; i++) 
+               {
+               	roomList.addRoom(new Room(trends[i],Integer.parseInt(portList[i])));
+               	
+				}
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            
         }).start();
+        
+        
 
         sendMessage.setOnAction(e -> {
             String message = MessageField.getText();
-            displayMessage(message);
+            client.sendMessage(message);
         });
 
 
     }
 
-    private String[] getTopTrends() throws IOException {
-        Document doc = Jsoup.connect("https://trends24.in/turkey/").get();
-        Elements trendElements = doc.select(".trend-card__list li a");
 
-        String[] trends = new String[5];
-        for (int i = 0; i < 5; i++) {
-            trends[i] = trendElements.get(i).text();
-        }
-        return trends;
-    }
 
     public void setUsername(String username) {
         welcomeLabel.setText(username);
@@ -148,9 +158,11 @@ public class MainGUI {
                     if (!port.trim().isEmpty()) {
                         try {
                             roomPort = Integer.parseInt(port);
-                            Room room = new Room(nameResult.get(), roomPort, false);
-                            rooms.add(room);
-                            listRoomNames();
+                            Room room = new Room(nameResult.get(), roomPort);
+                            //rooms.add(room);
+                            roomList.addRoom(room);
+                            Server.createChatroom(roomName, port);
+                            listRoomNames(rooms);
 
                         } catch (NumberFormatException e) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -165,9 +177,14 @@ public class MainGUI {
         });
     }
 
-    public void listRoomNames() {
+    public void listRoomNames(List<Room> rooms) {
         for (int i = 0; i < rooms.size(); i++) {
-            labels.get(i).setText(rooms.get(i).getName());
+            int index = i;
+        	Platform.runLater(() -> {
+        		labels.get(index).setText(rooms.get(index).getName());
+        	    
+        	});
+
 
 
         }
@@ -177,13 +194,30 @@ public class MainGUI {
     @FXML
     public void openRoom(MouseEvent event) {
         clearChatHistory();
+        if(client.isConnected()) 
+        {
+        	client.disconnect();
+        }
+        String roomName = null;
         Node source = (Node) event.getSource();
         if (source instanceof Label clickedLabel) {
-            String roomName = clickedLabel.getText();
+            
+        	roomName = clickedLabel.getText();
+            
             if (!roomName.isEmpty()) {
                 lobbyText.setText(roomName);
             }
         }
+        String finalRoomName = roomName;
+       Thread openRoomThread =  new Thread(() -> {
+        	Room roomToLoad = UtilFunctions.findRoom(finalRoomName, rooms);
+        	int port =roomToLoad.getPort();
+            client.connect("localhost", port, welcomeLabel.getText());
+            
+        });
+       openRoomThread.setDaemon(true);
+       openRoomThread.start();
+        
     }
 
     public void clearChatHistory() {
@@ -192,7 +226,7 @@ public class MainGUI {
 
     public void displayMessage(String message) {
         if (!message.isEmpty() && !lobbyText.getText().isEmpty()) {
-            Label messageLabel = new Label(welcomeLabel.getText() + ": " + message);
+            Label messageLabel = new Label(message);
             messageLabel.setWrapText(true);
             messageBox.getChildren().add(messageLabel);
             MessageField.clear();
@@ -203,6 +237,35 @@ public class MainGUI {
             }
         }
     }
+
+
+
+	public void updateRoomList(List<Room> rooms2) {
+		this.rooms = rooms2;
+		listRoomNames(rooms);
+		
+	}
+
+
+    // Daha sonra bak
+    @FXML
+    public void joinRoom(MouseEvent event){
+
+        TextInputDialog nameDialog = new TextInputDialog();
+        nameDialog.setTitle("Oda Bilgilerini Gir");
+        nameDialog.setHeaderText(null);
+        nameDialog.setContentText("Server Ip : ");
+        Optional<String> ipResult = nameDialog.showAndWait();
+
+        TextInputDialog nameDialog2 = new TextInputDialog();
+        nameDialog2.setTitle("Oda Bilgilerini Gir");
+        nameDialog2.setHeaderText(null);
+        nameDialog2.setContentText("Port Number : ");
+        Optional<String> portResult = nameDialog2.showAndWait();
+
+
+    }
+
 
 
 

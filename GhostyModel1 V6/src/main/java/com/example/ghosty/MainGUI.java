@@ -247,6 +247,7 @@ public class MainGUI {
 	}
 
 
+<<<<<<< HEAD
     // Daha sonra bak
     @FXML
     public void joinRoom(MouseEvent event){
@@ -268,5 +269,7 @@ public class MainGUI {
 
 
 
+=======
+>>>>>>> 08d00e8e44a90a2ae39fa8e72dbfccae841eb4cc
 
 }

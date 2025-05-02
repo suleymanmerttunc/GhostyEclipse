@@ -1,15 +1,11 @@
 package com.example.ghosty;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.*;
@@ -20,12 +16,19 @@ public class Server extends JFrame {
     private JTextField portField;
     private JButton createButton;
     private JTextArea logArea;
-    public static Map<String, ChatroomServer> chatrooms = new HashMap<>();;
+    
+    // Use ConcurrentHashMap for thread safety across clients
+    private static final Map<String, ChatroomServer> chatrooms = Collections.synchronizedMap(new HashMap<>());
+    private static final RoomList roomList = new RoomList();
+    
+    // Service discovery/registration socket
+    private static final int REGISTRATION_PORT = 9990;
+    private static ServerSocket registrationServer;
+    private static boolean isRunning = false;
+    
     private static Server INSTANCE;
-    private static RoomList roomList;
     
     private Server() {
-    	roomList = new RoomList();
         setTitle("Ghosty Server Manager");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +41,7 @@ public class Server extends JFrame {
         JLabel nameLabel = new JLabel("Chatroom Name:");
         chatroomNameField = new JTextField(15);
         JLabel portLabel = new JLabel("Port Number:");
-        portField = new JTextField("9999");
+        portField = new JTextField(String.valueOf(getNextAvailablePort()));
         createButton = new JButton("Create Chatroom");
         
         inputPanel.add(nameLabel);
@@ -59,34 +62,123 @@ public class Server extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createChatroom(chatroomNameField.getText(),portField.getText());
+                createChatroom(chatroomNameField.getText(), portField.getText());
+                // After creation, update the port field to the next available
+                portField.setText(String.valueOf(getNextAvailablePort()));
             }
         });
         
         add(mainPanel);
         setVisible(true);
-        
-        
     }
 
-    public static Server getInstance() 
-    {
-    	if(INSTANCE == null) 
-    	{
-    		INSTANCE = new Server();
-    		return INSTANCE;
-    	}
-    	return INSTANCE;
+    // Get the singleton instance of Server
+    public static synchronized Server getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Server();
+            startRegistrationServer();
+        }
+        return INSTANCE;
     }
     
-    public static void createChatroom(String chatroomName, String portText) {
-
-		chatroomName = chatroomName.trim();
+    // Start the service registration server
+    private static void startRegistrationServer() {
+        if (isRunning) return;
+        
+        isRunning = true;
+        Thread registrationThread = new Thread(() -> {
+            try {
+                registrationServer = new ServerSocket(REGISTRATION_PORT);
+                log("Room registration server started on port " + REGISTRATION_PORT);
+                
+                while (isRunning) {
+                    try {
+                        Socket clientSocket = registrationServer.accept();
+                        handleClientRegistration(clientSocket);
+                    } catch (IOException e) {
+                        if (isRunning) {
+                            log("Error accepting client connection: " + e.getMessage());
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                log("Error starting registration server: " + e.getMessage());
+                isRunning = false;
+            }
+        });
+        registrationThread.setDaemon(true);
+        registrationThread.start();
+    }
+    
+    private static void handleClientRegistration(Socket clientSocket) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+            
+            String command = (String) in.readObject();
+            
+            if ("GET_ROOMS".equals(command)) {
+                // Send room list to client
+                out.writeObject(new ArrayList<>(roomList.getRooms()));
+               
+            } else if ("CREATE_ROOM".equals(command)) {
+                Room room = (Room) in.readObject();
+                // Handle room creation request from client
+                boolean success = createChatroomFromClient(room.getName(), room.getPort());
+                out.writeBoolean(success);
+                
+                // Broadcast room list updates if room was created successfully
+                if (success) {
+                    broadcastRoomListUpdate();
+                }
+                
+            } else if ("DELETE_ROOM".equals(command)) {
+                String roomToDeleteName = (String) in.readObject();
+                boolean removed = false;
+                
+                // Find the room by name
+                Room roomToDelete = roomList.findRoomByName(roomToDeleteName);
+                if (roomToDelete != null) {
+                    // Remove from roomList
+                    roomList.removeRoom(roomToDelete);
+                    
+                    // Check if a chatroom server exists for this room
+                    ChatroomServer chatroomServer = chatrooms.get(roomToDeleteName);
+                    if (chatroomServer != null) {
+                        // Shutdown the chatroom server
+                        chatroomServer.shutdown();
+                    }
+                    
+                    removed = true;
+                    log("Room '" + roomToDeleteName + "' has been deleted");
+                    broadcastRoomListUpdate();
+                }
+                
+                out.writeBoolean(removed);
+                out.flush();
+            }
+            
+            clientSocket.close();
+        } catch (IOException | ClassNotFoundException e) {
+            log("Error handling client registration: " + e.getMessage());
+        }
+    }
+    
+    // Broadcast room list updates to all connected clients
+    private static void broadcastRoomListUpdate() {
+        // This would involve sending notifications to connected clients
+        // For now, we'll rely on clients polling for updates
+        log("Room list updated, clients will receive updates on next poll");
+    }
+    
+    // Create a chatroom from the server UI
+    public static boolean createChatroom(String chatroomName, String portText) {
+        chatroomName = chatroomName.trim();
         portText = portText.trim();
         
         if (chatroomName.isEmpty()) {
-            //JOptionPane.showMessageDialog(this, "Please enter a chatroom name.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            log("Error: Empty chatroom name");
+            return false;
         }
         
         int port;
@@ -96,92 +188,133 @@ public class Server extends JFrame {
                 throw new NumberFormatException("Port must be between 1024 and 65535");
             }
         } catch (NumberFormatException ex) {
-            //JOptionPane.showMessageDialog(this, "Please enter a valid port number (1024-65535).", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            log("Error: Invalid port number (must be between 1024 and 65535)");
+            return false;
         }
         
+        return createChatroomInternal(chatroomName, port);
+    }
+    
+    // Create a chatroom from a client request
+    private static boolean createChatroomFromClient(String chatroomName, int port) {
+        return createChatroomInternal(chatroomName, port);
+    }
+    
+    // Internal method to create a chatroom with synchronization
+    private static synchronized boolean createChatroomInternal(String chatroomName, int port) {
         // Check if port is already in use by another chatroom
-       if(Server.chatrooms != null) {
-        for (ChatroomServer server : Server.chatrooms.values()) {
-            if (server.getPort() == port) {
-               System.out.println("Port is Already in Use!");
-                return;
-            }
+        if (isPortInUse(port)) {
+            log("Error: Port " + port + " is already in use");
+            return false;
         }
-       }
         
         // Create a new chatroom server
         try {
-            ChatroomServer chatroom = new ChatroomServer(chatroomName,port);
-            Server.chatrooms.put(chatroomName, chatroom);
-            System.out.println("Chatroom Created!");
-            Room room = new Room(chatroomName,port);
-            if (Server.roomList == null) 
-            {
-            	Server.roomList = new RoomList();
-			}
-            Server.roomList.addRoom(room);
+            ChatroomServer chatroom = new ChatroomServer(chatroomName, port);
+            chatrooms.put(chatroomName, chatroom);
+            
+            Room room = new Room(chatroomName, port);
+            roomList.addRoom(room);
             
             // Start the chatroom server in a new thread
             Thread serverThread = new Thread(chatroom);
+            serverThread.setDaemon(true);
             serverThread.start();
             
-            //log("Created chatroom '" + chatroomName + "' on port " + port);
-            
-            // Clear input fields
-            //chatroomNameField.setText("");
-            //portField.setText("");
+            log("Created chatroom '" + chatroomName + "' on port " + port);
+            return true;
         } catch (IOException ex) {
-        	System.out.println(ex);
-            //log("Error creating chatroom '" + chatroomName + "': " + ex.getMessage());
+            log("Error creating chatroom '" + chatroomName + "': " + ex.getMessage());
+            return false;
         }
     }
-
     
-    public static void main(String[] args) {
-    	
-    	String[] trends;
-		try {
-			trends = UtilFunctions.getTopTrends();
-	    	String[] portList = {"9999","9998","9997","9996"};
-	    	
-	    	for (int i = 0; i < 4; i++) {	
-
-	    	createChatroom(trends[i], portList[i]);
-	    	}
-	    	
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-
-    	
-    	
-    	SwingUtilities.invokeLater(() ->  Server.getInstance());
-        
+    // Find the next available port starting from 9000
+    private static int getNextAvailablePort() {
+        int port = 9000;
+        while (isPortInUse(port)) {
+            port++;
+        }
+        return port;
     }
     
-
+    // Check if a port is already in use
+    private static boolean isPortInUse(int port) {
+        // First check our own chatrooms
+        for (ChatroomServer server : chatrooms.values()) {
+            if (server.getPort() == port) {
+                return true;
+            }
+        }
+        
+        // Then check if port is used by any other application
+        try (ServerSocket ignored = new ServerSocket(port)) {
+            // Port is available
+            return false;
+        } catch (IOException e) {
+            // Port is in use
+            return true;
+        }
+    }
+    
+    private static void log(String message) {
+        //System.out.println("[Server] " + message);
+        if (INSTANCE != null) {
+            INSTANCE.logArea.append(message + "\n");
+            // Auto-scroll
+            INSTANCE.logArea.setCaretPosition(INSTANCE.logArea.getDocument().getLength());
+        }
+    }
+    
+    // Shutdown the server gracefully
+    public static void shutdown() {
+        isRunning = false;
+        
+        for (ChatroomServer chatroom : chatrooms.values()) {
+            chatroom.shutdown();
+        }
+        
+        try {
+            if (registrationServer != null && !registrationServer.isClosed()) {
+                registrationServer.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Error closing registration server: " + e.getMessage());
+        }
+    }
+    
+    public static void main(String[] args) {
+        // Initialize default chatrooms with trending topics
+        try {
+            String[] trends = UtilFunctions.getTopTrends();
+            int basePort = 9999;
+            
+            for (int i = 0; i < Math.min(4, trends.length); i++) {
+                createChatroomInternal(trends[i], basePort - i);
+            }
+        } catch (IOException e) {
+            System.err.println("Error fetching trending topics: " + e.getMessage());
+        }
+        
+        // Start the server UI on the Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> Server.getInstance());
+    }
+    
+    // Inner class for handling individual chatrooms
     public static class ChatroomServer implements Runnable {
-        private String chatroomName;
-        private int port;
-        private ArrayList<ConnectionHandler> connections;
+        private final String chatroomName;
+        private final int port;
+        private final List<ConnectionHandler> connections = Collections.synchronizedList(new ArrayList<>());
         private ServerSocket server;
         private boolean done;
-        private ExecutorService pool;
-        private Map<String,ChatroomServer> chatrooms;
-
+        private final ExecutorService pool;
         
         public ChatroomServer(String chatroomName, int port) throws IOException {
             this.chatroomName = chatroomName;
             this.port = port;
-            this.connections = new ArrayList<>();
             this.done = false;
             this.server = new ServerSocket(port);
             this.pool = Executors.newCachedThreadPool();
-            this.chatrooms = Server.chatrooms;
-
         }
         
         public int getPort() {
@@ -191,13 +324,15 @@ public class Server extends JFrame {
         @Override
         public void run() {
             try {
-                
                 while (!done) {
                     Socket clientSocket = server.accept();
                     String clientAddress = clientSocket.getInetAddress().getHostAddress();
+                    log("New client connected to " + chatroomName + " from " + clientAddress);
                     
                     ConnectionHandler handler = new ConnectionHandler(clientSocket);
-                    connections.add(handler);
+                    synchronized (connections) {
+                        connections.add(handler);
+                    }
                     pool.execute(handler);
                 }
             } catch (IOException e) {
@@ -208,9 +343,11 @@ public class Server extends JFrame {
         }
         
         public void broadcast(String message) {
-            for (ConnectionHandler ch : connections) {
-                if (ch != null) {
-                    ch.sendMessage(message);
+            synchronized (connections) {
+                for (ConnectionHandler ch : connections) {
+                    if (ch != null) {
+                        ch.sendMessage(message);
+                    }
                 }
             }
         }
@@ -223,20 +360,32 @@ public class Server extends JFrame {
                     server.close();
                 }
                 
-                for (ConnectionHandler ch : connections) {
-                    ch.shutdown();
+                synchronized (connections) {
+                    for (ConnectionHandler ch : connections) {
+                        ch.shutdown();
+                    }
+                    connections.clear();
                 }
                 
                 pool.shutdown();
                 
-
-                chatrooms.remove(chatroomName);
+                synchronized (chatrooms) {
+                    chatrooms.remove(chatroomName);
+                }
+                
+                // Update the room list
+                synchronized (roomList) {
+                    roomList.removeRoomByName(chatroomName);
+                }
+                
+                log("Chatroom '" + chatroomName + "' was shut down");
             } catch (IOException e) {
+                log("Error shutting down chatroom: " + e.getMessage());
             }
         }
         
         class ConnectionHandler implements Runnable {
-            private Socket clientSocket;
+            private final Socket clientSocket;
             private BufferedReader in;
             private PrintWriter out;
             private String nickname;
@@ -269,12 +418,12 @@ public class Server extends JFrame {
                                 out.println("Error: No nickname provided");
                             }
                         } else if (message.startsWith("/quit")) {
-                        	
                             broadcast(nickname + " left the chat!");
-
                             shutdown();
                             break;
-                        } else {
+                        }
+                        
+                        else {
                             broadcast(nickname + ": " + message);
                         }
                     }
@@ -291,11 +440,11 @@ public class Server extends JFrame {
                         clientSocket.close();
                     }
                     
-
-                    connections.remove(this);
-                } catch (IOException e) 
-                {
-
+                    synchronized (connections) {
+                        connections.remove(this);
+                    }
+                } catch (IOException e) {
+                    log("Error closing client connection: " + e.getMessage());
                 }
             }
             

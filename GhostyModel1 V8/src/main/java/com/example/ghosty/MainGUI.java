@@ -101,7 +101,7 @@ public class MainGUI implements RoomList.RoomListObserver {
 
 
     public void initialize() {
-        // Load notification sound
+
         try {
             String soundPath = getClass().getResource("/sounds/notification.wav").toExternalForm();
             notificationSound = new AudioClip(soundPath);
@@ -133,13 +133,12 @@ public class MainGUI implements RoomList.RoomListObserver {
         MessageField.setOnAction(e -> sendMessage.fire());
 
 
-        // Setup periodic room list updates
+
         startRoomUpdates();
         
-        // Start background thread to load trending topics
+
         new Thread(() -> {
             try {
-                // Load trending topics
                 String[] trends = UtilFunctions.getTopTrends();
                 
                 Platform.runLater(() -> {
@@ -179,7 +178,7 @@ public class MainGUI implements RoomList.RoomListObserver {
     }
 
     /**
-     * Update the room list display
+     * Odaların en güncel haliyle listelenmesini sağlayan fonksiyon.
      */
     @Override
     public void updateRoomList(List<Room> updatedRooms) {
@@ -201,7 +200,7 @@ public class MainGUI implements RoomList.RoomListObserver {
     }
     
     /**
-     * Handle opening a room when a room label is clicked
+     * ilgili odanın üstüne tıklandığı zaman odanın yüklenmesini sağlayan fonksiyon.
      */
     @FXML
     public void openRoom(MouseEvent event) {
@@ -250,9 +249,7 @@ public class MainGUI implements RoomList.RoomListObserver {
         }
     }
     
-    /**
-     * Clear the chat history
-     */
+
     public void clearChatHistory() {
         Platform.runLater(() -> {
         	messageBox.getChildren().clear();
@@ -263,9 +260,7 @@ public class MainGUI implements RoomList.RoomListObserver {
         });
     }
     
-    /**
-     * Display a message in the chat window
-     */
+
     public void displayMessage(String message) {
         if (!message.isEmpty()) {
             Platform.runLater(() -> {
@@ -295,7 +290,7 @@ public class MainGUI implements RoomList.RoomListObserver {
 
 
     /**
-     * Handle joining a room by IP and port
+     * IP ve port bilgisiyle bir Server'a bağlanmayı sağlayan fonksiyon.
      */
     @FXML
     public void joinRoom(MouseEvent event) {
@@ -339,7 +334,7 @@ public class MainGUI implements RoomList.RoomListObserver {
                 break;
         }
 
-        // Prompt for server IP
+        // Server ip girme ekranı
         TextInputDialog ipDialog = new TextInputDialog(SERVER_IP);
         ipDialog.setTitle(title);
         ipDialog.setHeaderText(null);
@@ -350,7 +345,7 @@ public class MainGUI implements RoomList.RoomListObserver {
             return;
         }
 
-        // Prompt for port number
+        //Port numarası girme ekranı
         TextInputDialog portDialog = new TextInputDialog("9999");
         portDialog.setTitle(title);
         portDialog.setHeaderText(null);
@@ -395,7 +390,7 @@ public class MainGUI implements RoomList.RoomListObserver {
 
 
     /**
-     * Start periodic updates of the room list
+     * Her 5 saniyede bir Server'dan güncel odaların listesini iste
      */
     private void startRoomUpdates() {
         // Cancel any existing timer

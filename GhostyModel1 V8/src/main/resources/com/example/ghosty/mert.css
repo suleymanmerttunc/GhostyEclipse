@@ -1,0 +1,23 @@
+.hover-effect {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-radius: 5;
+}
+
+.hover-effect:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+.button-with-border {
+    -fx-border-color: #DCDCDC;
+    -fx-border-width: 1px;
+    -fx-border-radius: 2px;
+    -fx-padding: 4px;
+}
+
+.setStyle{
+    -fx-background-color:#5A3F7F;
+}
+
+

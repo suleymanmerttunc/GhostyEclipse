@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ghosty.MainGUI">
+    <children>
+        <BorderPane prefHeight="700.0" prefWidth="1000.0">
+            <top>
+                <HBox fx:id="topHbox" prefHeight="35.0" prefWidth="900.0" style="-fx-background-color: #3F2D56;" BorderPane.alignment="CENTER" />
+            </top>
+            <left>
+                <VBox fx:id="leftVBox" prefHeight="565.0" prefWidth="225.0" style="-fx-background-color: #5A3F7F;" BorderPane.alignment="CENTER">
+                    <children>
+                        <Pane prefHeight="612.0" prefWidth="225.0">
+                            <children>
+                                <ImageView fitHeight="83.0" fitWidth="85.0" layoutX="18.0" layoutY="36.0" opacity="0.96" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../images/ghosty.png" />
+                                    </image>
+                                </ImageView>
+                                <Label layoutX="88.0" layoutY="47.0" opacity="0.91" prefHeight="60.0" prefWidth="145.0" text="Ghosty" textFill="WHITE">
+                                    <font>
+                                        <Font name="Calibri Bold" size="42.0" />
+                                    </font>
+                                </Label>
+                                <Text fx:id="trendRoomText" fill="#bfbebe" layoutX="11.0" layoutY="254.0" opacity="0.76" strokeType="OUTSIDE" strokeWidth="0.0" text="TREND ROOMS" wrappingWidth="169.13671875">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Text>
+                                <HBox layoutY="257.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                                    <children>
+                                        <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="4.0" />
+                                            </HBox.margin>
+                                        </Text>
+                                        <Label fx:id="firstText" onMouseClicked="#openRoom" prefHeight="28.0" prefWidth="191.0" text="firstTrendTopic" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="2.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox layoutY="289.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                                    <children>
+                                        <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="4.0" />
+                                            </HBox.margin>
+                                        </Text>
+                                        <Label fx:id="secondText" onMouseClicked="#openRoom" prefHeight="28.0" prefWidth="193.0" text="secondTrendTopic" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="2.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox layoutY="321.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                                    <children>
+                                        <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="4.0" />
+                                            </HBox.margin>
+                                        </Text>
+                                        <Label fx:id="thirdText" onMouseClicked="#openRoom" prefHeight="28.0" prefWidth="196.0" text="thirdTrendTopic" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="2.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox layoutY="353.0" prefHeight="32.0" prefWidth="225.0" styleClass="hover-effect" stylesheets="@mert.css">
+                                    <children>
+                                        <Text fill="#a1a1a1" strokeType="OUTSIDE" strokeWidth="0.0" text="#" textAlignment="CENTER" wrappingWidth="33.13671875">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="4.0" />
+                                            </HBox.margin>
+                                        </Text>
+                                        <Label fx:id="fourthText" onMouseClicked="#openRoom" prefHeight="28.0" prefWidth="195.0" text="fourthTrendTopic" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="2.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <Text fx:id="groupChatText" fill="#bfbebe" layoutX="16.0" layoutY="407.0" opacity="0.76" strokeType="OUTSIDE" strokeWidth="0.0" text="1ON1 &amp; GROUP CHAT" wrappingWidth="192.13671875">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Text>
+                                <ToggleButton fx:id="createRoomButton" layoutX="14.0" layoutY="139.0" mnemonicParsing="false" onMouseClicked="#createRooms" prefHeight="34.0" prefWidth="192.0" style="-fx-background-color: #40E0D0;" text="  1ON1 &amp; GROUP CHAT           ➕" textFill="WHITE" />
+                                <ToggleButton fx:id="deleteRoomButton" layoutX="14.0" layoutY="185.0" mnemonicParsing="false" onMouseClicked="#deleteRooms" prefHeight="34.0" prefWidth="192.0" style="-fx-background-color: #1DA1F2;" text="  1ON1 &amp; GROUP CHAT           −" textFill="WHITE" />
+                                <HBox layoutX="32.0" layoutY="419.0" prefHeight="35.0" prefWidth="195.0">
+                                    <children>
+                                        <Label fx:id="roomLabel1" onMouseClicked="#openRoom" prefHeight="31.0" prefWidth="188.0" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <opaqueInsets>
+                                                <Insets />
+                                            </opaqueInsets>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox layoutX="32.0" layoutY="454.0" prefHeight="35.0" prefWidth="195.0">
+                                    <children>
+                                        <Label fx:id="roomLabel2" onMouseClicked="#openRoom" prefHeight="31.0" prefWidth="205.0" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <opaqueInsets>
+                                                <Insets />
+                                            </opaqueInsets>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox layoutX="32.0" layoutY="491.0" prefHeight="35.0" prefWidth="195.0">
+                                    <children>
+                                        <Label fx:id="roomLabel3" onMouseClicked="#openRoom" prefHeight="31.0" prefWidth="205.0" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <opaqueInsets>
+                                                <Insets />
+                                            </opaqueInsets>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox layoutX="32.0" layoutY="526.0" prefHeight="35.0" prefWidth="195.0">
+                                    <children>
+                                        <Label fx:id="roomLabel4" onMouseClicked="#openRoom" prefHeight="31.0" prefWidth="205.0" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <opaqueInsets>
+                                                <Insets />
+                                            </opaqueInsets>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox layoutX="32.0" layoutY="561.0" prefHeight="35.0" prefWidth="195.0">
+                                    <children>
+                                        <Label fx:id="roomLabel5" onMouseClicked="#openRoom" prefHeight="31.0" prefWidth="205.0" textFill="#a1a1a1">
+                                            <font>
+                                                <Font size="17.0" />
+                                            </font>
+                                            <opaqueInsets>
+                                                <Insets />
+                                            </opaqueInsets>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </Pane>
+                        <HBox fx:id="bottomHBox" prefHeight="57.0" prefWidth="225.0" style="-fx-background-color: #4D366B;">
+                            <children>
+                                <Pane prefHeight="35.0" prefWidth="225.0">
+                                    <children>
+                                        <ImageView fx:id="avatarImage" fitHeight="35.0" fitWidth="35.0" layoutX="22.0" layoutY="9.0" onMouseClicked="#onAvatarImageClick" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../images/default-avatar.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label fx:id="welcomeLabel" layoutX="67.0" layoutY="18.0" opacity="0.75" prefHeight="27.0" prefWidth="96.0" text="yourUsername" textFill="WHITE">
+                                            <padding>
+                                                <Insets right="10.0" top="4.0" />
+                                            </padding>
+                                        </Label>
+                                        <Text fx:id="usernameText" fill="#b9b9b9" layoutX="67.0" layoutY="23.0" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="122.13671875" />
+                              <ImageView fx:id="settingsButton" fitHeight="31.0" fitWidth="27.0" layoutX="184.0" layoutY="12.0" onMouseClicked="#openSettingsWindow" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/grey-settings-gear-22621.png" />
+                                 </image>
+                              </ImageView>
+                                    </children>
+                                </Pane>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <Pane prefHeight="665.0" prefWidth="767.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Pane prefHeight="100.0" prefWidth="774.0" style="-fx-background-color: white;">
+                            <children>
+                                <Separator layoutY="102.0" prefHeight="0.0" prefWidth="775.0" />
+                                <Label fx:id="lobbyText" layoutX="21.0" layoutY="23.0" prefHeight="36.0" prefWidth="579.0" text="#Lobby" textFill="#5a3f7f">
+                                    <font>
+                                        <Font name="System Bold" size="25.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="joinRoom" layoutX="575.0" layoutY="43.0" mnemonicParsing="false" onMouseClicked="#joinRoom" prefHeight="32.0" prefWidth="117.0" stylesheets="@mert.css" text="➕ JOIN ROOM" textFill="#b5b5b5">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                    <styleClass>
+                                        <String fx:value="button-with-border" />
+                                        <String fx:value="hover-effect" />
+                                    </styleClass>
+                                </Button>
+                                <Button layoutX="692.0" layoutY="43.0" mnemonicParsing="false" onAction="#showActiveUsers" prefHeight="32.0" prefWidth="33.0" stylesheets="@mert.css">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                    <styleClass>
+                                        <String fx:value="button-with-border" />
+                                        <String fx:value="hover-effect" />
+                                    </styleClass>
+                                    <graphic>
+                                        <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../images/OnlinePeople.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="goBackLobby" layoutX="725.0" layoutY="43.0" mnemonicParsing="false" onMouseClicked="#goBackLobby" prefHeight="32.0" prefWidth="35.0" stylesheets="@mert.css">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                    <styleClass>
+                                        <String fx:value="button-with-border" />
+                                        <String fx:value="hover-effect" />
+                                    </styleClass>
+                                    <graphic>
+                                        <ImageView fitHeight="23.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../images/exit.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </children>
+                        </Pane>
+                        <TextField fx:id="MessageField" alignment="TOP_LEFT" layoutX="65.0" layoutY="547.0" prefHeight="84.0" prefWidth="645.0" promptText="Type a message">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </TextField>
+                        <Button fx:id="sendButton" layoutX="32.0" layoutY="547.0" mnemonicParsing="false" onAction="#onSendFileClicked" prefHeight="83.0" prefWidth="33.0" stylesheets="@mert.css">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <styleClass>
+                                <String fx:value="button-with-border" />
+                                <String fx:value="hover-effect" />
+                            </styleClass>
+                            <graphic>
+                                <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../images/icons8-plus-24.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="sendMessage" layoutX="710.0" layoutY="548.0" mnemonicParsing="false" prefHeight="83.0" prefWidth="33.0" stylesheets="@mert.css">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <styleClass>
+                                <String fx:value="button-with-border" />
+                                <String fx:value="hover-effect" />
+                            </styleClass>
+                            <graphic>
+                                <ImageView fitHeight="37.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../images/icons8-send-message-30.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                  <ScrollPane fx:id="scrollPane" layoutX="32.0" layoutY="123.0" prefHeight="410.0" prefWidth="723.0">
+                     <content>
+                              <VBox fx:id="messageBox" prefHeight="413.0" prefWidth="723.0" style="-fx-background-color: white;" />
+                     </content>
+                  </ScrollPane>
+                    </children>
+                </Pane>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

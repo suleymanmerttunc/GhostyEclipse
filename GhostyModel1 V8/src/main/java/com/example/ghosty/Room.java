@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Represents a chat room with a name and port.
- * Made serializable to support transfer between server and clients.
+ * Bir isim ve portla chatroom bilgilerini kapsayan class.
+ * Server ve client arasında iletimi sağlanabilmesi için Serializable olması gerekli.
  */
 public class Room implements Serializable {
     private static final long serialVersionUID = 1L;

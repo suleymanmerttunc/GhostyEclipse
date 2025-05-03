@@ -13,16 +13,14 @@ import java.util.List;
 public class UtilFunctions {
     
     /**
-     * Get the top trending topics from the web
+     * İnternetten twitter trendlerini çeken metod
      * 
-     * @return Array of trending topic strings
-     * @throws IOException If there's an error fetching trends
+     * @return Türkiyeki trendlerin listesini
      */
     public static String[] getTopTrends() throws IOException {
         String[] trends = new String[4];
         
         try {
-            // Use JSoup to fetch trending topics (this is a placeholder - actual implementation might differ)
 	        Document doc = Jsoup.connect("https://trends24.in/turkey/").get(); 	        
 	        Elements trendElements = doc.select(".trend-card__list li a");
             
@@ -30,12 +28,12 @@ public class UtilFunctions {
                 trends[i] = trendElements.get(i).text();
             }
             
-            // Fill any remaining slots with placeholders
+
             for (int i = trendElements.size(); i < 4; i++) {
                 trends[i] = "Trending Topic " + (i + 1);
             }
         } catch (IOException e) {
-            // If web fetch fails, provide default trending topics
+            // Eğer trendleri çekerken bir hata yaşandıysa placeholder değerler kullanır
             trends[0] = "Technology";
             trends[1] = "Sports";
             trends[2] = "Entertainment";
@@ -47,11 +45,11 @@ public class UtilFunctions {
     }
     
     /**
-     * Find a room by its name in a list of rooms
+     * İsim olarak uyan bir odayı verilen odalar listesinden bulur
      * 
-     * @param roomName The name of the room to find
-     * @param rooms The list of rooms to search
-     * @return The found room, or null if not found
+     * @param bulunmak istenen odanın ismi
+     * @param odalar listesi (Room objeleri tutan bir List)
+     * @return uyan room yoksa null, varsa Room objesi
      */
     public static Room findRoom(String roomName, List<Room> rooms) {
         for (Room room : rooms) {
@@ -63,11 +61,11 @@ public class UtilFunctions {
     }
     
     /**
-     * Find a room by its port number in a list of rooms
+     * port numarası olarak uyan bir odayı verilen odalar listesinden bulur
      * 
-     * @param port The port number to search for
-     * @param rooms The list of rooms to search
-     * @return The found room, or null if not found
+     * @param bulunmak istenen odanın portu
+     * @param odalar listesi (Room objeleri tutan bir List)
+     * @return uyan room yoksa null, varsa Room objesi
      */
     public static Room findRoom(int port, List<Room> rooms) {
         for (Room room : rooms) {

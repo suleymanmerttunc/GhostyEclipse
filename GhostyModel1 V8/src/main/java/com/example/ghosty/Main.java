@@ -8,9 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-/**
- * Main application launcher for the Ghosty chat application
- */
+
 public class Main extends Application {
 	private final String serverIp = "localhost";
     
@@ -18,7 +16,6 @@ public class Main extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        // Check if the server is already running, if not, start it
         ensureServerRunning();
         
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login.fxml"));
@@ -29,30 +26,30 @@ public class Main extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/ghosty.png")));
         stage.show();
         stage.setOnCloseRequest(e -> {
-            Platform.exit();     // Close JavaFX threads
-            System.exit(0);      // Kill remaining non-daemon threads
+            Platform.exit();     
+            System.exit(0);      
         });
     
     }
     
     
     /**
-     * Ensure the server is running
+     * Çalışan bir server olduğundan emin olmak için kullandığım method. eğer halihazırda çalışan bir server varsa ona bağlan, yoksa yeni bir server oluştur.
      */
     private void ensureServerRunning() {
         if (!isServerRunning) {
-            // Try to connect to the registration port to check if server is running
+            // Eğer server zaten çalışıyorsa ona bağlan
             try (java.net.Socket socket = new java.net.Socket(serverIp, 9990)) {
                 // Server is already running
                 System.out.println("Connected to existing server");
             } catch (IOException e) {
-                // Server is not running, start it
+                // çalışan server yoksa yeni server oluştur.
                 System.out.println("Starting new server instance");
                 new Thread(() -> {
                     Server.main(new String[0]);
                 }).start();
                 
-                // Give the server time to start
+                // Servera calışması için zaman tanı
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
@@ -67,7 +64,6 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        // Ensure clean shutdown
         Platform.exit();
     }
     

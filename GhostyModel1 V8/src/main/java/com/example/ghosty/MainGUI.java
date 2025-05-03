@@ -97,6 +97,7 @@ public class MainGUI implements RoomList.RoomListObserver {
     private List<Room> roomsCreatedByThisUser = new ArrayList<>();
     private final int TRENDING_ROOM_COUNT = 4;
     private AudioClip notificationSound;
+    private long timeRemaining;
 
 
     public void initialize() {
@@ -504,7 +505,7 @@ public class MainGUI implements RoomList.RoomListObserver {
         }
     }
 
-    private String getLocalizedMessage(String key) {
+    public String getLocalizedMessage(String key) {
         String lang = getCurrentLanguage();
         switch (lang) {
             case "tr":
@@ -521,6 +522,7 @@ public class MainGUI implements RoomList.RoomListObserver {
                     case "Error Deleting Room!": return "Oda Silme Hatası!";
                     case "You can't delete a room you didn't create!": return "Kendi oluşturmadığınız bir odayı silemezsiniz!";
                     case "has been deleted.": return "silindi.";
+                    case "Chat history has been cleared by the server (auto-clear timer)": return "Chat geçmişi sunucu tarafından temizlendi (otomatik temizlik zamanlayıcısı)";
                     default: return key;
                 }
             case "es":
@@ -537,6 +539,8 @@ public class MainGUI implements RoomList.RoomListObserver {
                     case "Error Deleting Room!": return "¡Error al eliminar la habitación!";
                     case "You can't delete a room you didn't create!": return "¡No puedes eliminar una habitación que no creaste!";
                     case "has been deleted.": return "ha sido eliminada.";
+                    case "Chat history has been cleared by the server (auto-clear timer)": return "El historial de chat ha sido borrado por el servidor (temporizador de borrado automático)";
+                    
                     default: return key;
                 }
             case "zh":
@@ -553,6 +557,7 @@ public class MainGUI implements RoomList.RoomListObserver {
                     case "Error Deleting Room!": return "删除房间错误！";
                     case "You can't delete a room you didn't create!": return "您不能删除未创建的房间！";
                     case "has been deleted.": return "已被删除。";
+                    case "Chat history has been cleared by the server (auto-clear timer)": return "聊天历史已由服务器清除（自动清除计时器）";
                     default: return key;
                 }
             case "en":
@@ -686,7 +691,7 @@ public class MainGUI implements RoomList.RoomListObserver {
                     try {
                         int port = Integer.parseInt(portResult.get().trim());
 
-                        // Request room creation from server
+                        // server'dan oda oluşturmasını iste
                         client.createRoom(roomName, port);
                         roomsCreatedByThisUser.add(new Room(roomName,-1));
 
@@ -705,7 +710,7 @@ public class MainGUI implements RoomList.RoomListObserver {
             if (nameResult.isPresent() && !nameResult.get().trim().isEmpty()) {
                 String roomName = nameResult.get().trim();
 
-                // Ask for port number
+                //kullanıcıdan Port girmesini iste
                 TextInputDialog portDialog = new TextInputDialog();
                 portDialog.setTitle("Port Number");
                 portDialog.setHeaderText(null);
@@ -731,7 +736,7 @@ public class MainGUI implements RoomList.RoomListObserver {
     }
     
     /**
-     * Count the number of custom rooms (non-trending rooms)
+     * Trend odası olmayan oda sayısını döndür
      */
     private int getCustomRoomCount() {
         int count = rooms.size() - TRENDING_ROOM_COUNT;
@@ -739,7 +744,7 @@ public class MainGUI implements RoomList.RoomListObserver {
     }
     
     /**
-     * Show a simple alert dialog
+     * title başlıklı content içerikle bir pop-up çıkartıp kullanıcıyı uyar
      */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -863,6 +868,42 @@ public class MainGUI implements RoomList.RoomListObserver {
         }
     }
 
+	public void updateTimeRemaining(long timeRemaining) 
+	{
+		this.timeRemaining = timeRemaining;
+		startCountdown(timeRemaining);
+		
+	}
+	
+    public void startCountdown(long durationInMillis) {
+        Timer timer = new Timer(true);
+        final long interval = 1000; 
+        final long[] timeLeft = {durationInMillis};
+
+        TimerTask task = new TimerTask() {
+            public void run() {
+                if (timeLeft[0] > 0) {
+                	
+                	/*
+                	 * Tam olarak bu commentin olduğu satırda (timeLeft[0] / 1000) dersen saniye cinsinden sayacın ne kadar vakti kaldığına ulaşıyorsun. 
+                	 * yani diyelim ki sağ üste bi label koyup onu her saniye güncellemek istiyorsan burda Platform.runLater(()-> label.setText(String.valueOf( timeLeft[0] / 1000) ) ); 
+                	 * dersen olması lazım ama denemedim.
+                	*/
+                	
+                    timeLeft[0] -= interval;
+                } else {
+                    timer.cancel();
+                }
+            }
+        };
+
+        timer.scheduleAtFixedRate(task, 0, interval);
+    }
+	
+
+
+    
+    
 
 
 }

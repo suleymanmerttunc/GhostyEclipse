@@ -1,0 +1,32 @@
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+.side-panel {
+    -fx-background-color: #512DA8;
+    -fx-padding: 20;
+    -fx-pref-width: 180px;
+}
+
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.subtitle-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.close-button {
+    -fx-background-color: #00BCD4;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 6 20 6 20;
+    -fx-background-radius: 10;
+}
+
+#settingsPane {
+    -fx-background-color: linear-gradient(to right, #6A1B9A, #1E88E5);
+}

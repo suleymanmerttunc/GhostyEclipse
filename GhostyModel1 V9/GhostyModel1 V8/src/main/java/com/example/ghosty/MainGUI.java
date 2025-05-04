@@ -173,13 +173,12 @@ public class MainGUI implements RoomList.RoomListObserver {
                 String[] trends = UtilFunctions.getTopTrends();
                 
                 Platform.runLater(() -> {
-                    firstText.setText(formatTrend(trends[0]));
-                    secondText.setText(formatTrend(trends[1]));
-                    thirdText.setText(formatTrend(trends[2]));
-                    fourthText.setText(formatTrend(trends[3]));
+                    firstText.setText(trends[0]);
+                    secondText.setText(trends[1]);
+                    thirdText.setText(trends[2]);
+                    fourthText.setText(trends[3]);
                 });
                 
-                // Get current room list
                 updateRoomList(client.getRoomList());
 
                 
@@ -189,12 +188,6 @@ public class MainGUI implements RoomList.RoomListObserver {
             }
         }).start();
     }
-    /*Bu metodun amacı bazen trend odaların başında # gelirken bazen gelmiyor bu sorunu çözdük */
-    private String formatTrend(String trend) {
-        if (trend == null || trend.isBlank()) return "#";
-        return trend.startsWith("#") ? trend : "#" + trend.trim();
-    }
-
     public String getCurrentLanguage() {
         String langText = trendRoomText.getText();
 
@@ -221,12 +214,10 @@ public class MainGUI implements RoomList.RoomListObserver {
         this.rooms = updatedRooms;
         
         Platform.runLater(() -> {
-            // Update room labels
             for (int i = TRENDING_ROOM_COUNT; i < rooms.size(); i++) {
                 labels.get(i-TRENDING_ROOM_COUNT).setText(rooms.get(i).getName());
             }
-            
-            // Clear any unused labels
+
             for (int i = rooms.size()-TRENDING_ROOM_COUNT; i < labels.size(); i++) {
                 labels.get(i).setText("");
             }
@@ -243,21 +234,20 @@ public class MainGUI implements RoomList.RoomListObserver {
         clearChatHistory();
         
         
-        // Disconnect from current room if connected
+
         if (client.isConnected()) {
             client.disconnect();
         }
         
-        // Get the clicked label
+        // Tıklanan label'ın içeriğini al
         Node source = (Node) event.getSource();
         if (source instanceof Label clickedLabel) {
             String roomName = clickedLabel.getText();
             
             if (!roomName.isEmpty()) {
-                // Update the lobby text
                 lobbyText.setText(roomName);
                 
-                // Find the room to connect to
+                // Bağlanılacak odayı bul
                 Room roomToConnect = null;
                 for (Room room : rooms) {
                     if (room.getName().equals(roomName)) {
@@ -267,7 +257,7 @@ public class MainGUI implements RoomList.RoomListObserver {
                 }
                 
                 if (roomToConnect != null) {
-                    // Connect to the room
+                    // Odaya bağlan
                     final Room finalRoom = roomToConnect;
                     Thread connectThread = new Thread(() -> {
                         client.connect(SERVER_IP, finalRoom.getPort(), welcomeLabel.getText());
@@ -426,25 +416,22 @@ public class MainGUI implements RoomList.RoomListObserver {
      * Her 5 saniyede bir Server'dan güncel odaların listesini iste
      */
     private void startRoomUpdates() {
-        // Cancel any existing timer
         if (roomUpdateTimer != null) {
             roomUpdateTimer.cancel();
         }
         
-        // Create new timer for polling room list updates
         roomUpdateTimer = new Timer(true);
         roomUpdateTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    // Get updated room list from server
                     List<Room> updatedRooms = client.getRoomList();
                     Platform.runLater(() -> updateRoomList(updatedRooms));
                 } catch (Exception e) {
                     System.err.println("Error updating room list: " + e.getMessage());
                 }
             }
-        }, 5000, 5000); // Update every 5 seconds
+        }, 5000, 5000); 
     }
     
 
@@ -455,7 +442,6 @@ public class MainGUI implements RoomList.RoomListObserver {
 
     @FXML
     public void deleteRooms(MouseEvent event) {
-        // Get non-empty room labels
         List<String> availableRooms = new ArrayList<>();
         Map<String, Integer> roomIndexMap = new HashMap<>();
 
@@ -596,7 +582,7 @@ public class MainGUI implements RoomList.RoomListObserver {
 
 
     /**
-     * Handle room creation
+     * Oda oluşturmakla yükümlü fonskiyon
      */
     @FXML
     public void createRooms(MouseEvent event) {
@@ -614,7 +600,6 @@ public class MainGUI implements RoomList.RoomListObserver {
             if (nameResult.isPresent() && !nameResult.get().trim().isEmpty()) {
                 String roomName = nameResult.get().trim();
 
-                // Ask for port number
                 TextInputDialog portDialog = new TextInputDialog();
                 portDialog.setTitle("Port Numarası");
                 portDialog.setHeaderText(null);
@@ -625,7 +610,6 @@ public class MainGUI implements RoomList.RoomListObserver {
                     try {
                         int port = Integer.parseInt(portResult.get().trim());
 
-                        // Request room creation from server
                         client.createRoom(roomName, port);
                         roomsCreatedByThisUser.add(new Room(roomName,-1));
 
@@ -644,7 +628,6 @@ public class MainGUI implements RoomList.RoomListObserver {
             if (nameResult.isPresent() && !nameResult.get().trim().isEmpty()) {
                 String roomName = nameResult.get().trim();
 
-                // Ask for port number
                 TextInputDialog portDialog = new TextInputDialog();
                 portDialog.setTitle("Port Number");
                 portDialog.setHeaderText(null);
@@ -655,7 +638,6 @@ public class MainGUI implements RoomList.RoomListObserver {
                     try {
                         int port = Integer.parseInt(portResult.get().trim());
 
-                        // Request room creation from server
                         client.createRoom(roomName, port);
                         roomsCreatedByThisUser.add(new Room(roomName,-1));
 
@@ -675,7 +657,6 @@ public class MainGUI implements RoomList.RoomListObserver {
             if (nameResult.isPresent() && !nameResult.get().trim().isEmpty()) {
                 String roomName = nameResult.get().trim();
 
-                // Ask for port number
                 TextInputDialog portDialog = new TextInputDialog();
                 portDialog.setTitle("Número de Puerto");
                 portDialog.setHeaderText(null);
@@ -686,7 +667,6 @@ public class MainGUI implements RoomList.RoomListObserver {
                     try {
                         int port = Integer.parseInt(portResult.get().trim());
 
-                        // Request room creation from server
                         client.createRoom(roomName, port);
                         roomsCreatedByThisUser.add(new Room(roomName,-1));
 
@@ -706,7 +686,6 @@ public class MainGUI implements RoomList.RoomListObserver {
             if (nameResult.isPresent() && !nameResult.get().trim().isEmpty()) {
                 String roomName = nameResult.get().trim();
 
-                // Ask for port number
                 TextInputDialog portDialog = new TextInputDialog();
                 portDialog.setTitle("端口号");
                 portDialog.setHeaderText(null);
@@ -746,8 +725,8 @@ public class MainGUI implements RoomList.RoomListObserver {
                 if (portResult.isPresent() && !portResult.get().trim().isEmpty()) {
                     try {
                         int port = Integer.parseInt(portResult.get().trim());
-
-                        // Request room creation from server
+                        
+                        //Servera oda oluşturma isteği gönder
                         client.createRoom(roomName, port);
                         roomsCreatedByThisUser.add(new Room(roomName,-1));
 
@@ -782,7 +761,12 @@ public class MainGUI implements RoomList.RoomListObserver {
 
     @FXML
     public void goBackLobby(MouseEvent event){
-        clearChatHistory();
+        if (client.isConnected()) 
+        {
+        	client.disconnect();
+		}
+    	
+    	clearChatHistory();
 
         if (trendRoomText.getText().equals("Trend Odalar")){
             lobbyText.setText("#Lobi");
@@ -798,6 +782,7 @@ public class MainGUI implements RoomList.RoomListObserver {
         else {
             lobbyText.setText("#Lobby");
         }
+        
 
     }
 

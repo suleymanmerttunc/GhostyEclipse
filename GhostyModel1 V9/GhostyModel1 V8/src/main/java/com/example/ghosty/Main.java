@@ -40,7 +40,6 @@ public class Main extends Application {
         if (!isServerRunning) {
             // Eğer server zaten çalışıyorsa ona bağlan
             try (java.net.Socket socket = new java.net.Socket(serverIp, 9990)) {
-                // Server is already running
                 System.out.println("Connected to existing server");
             } catch (IOException e) {
                 // çalışan server yoksa yeni server oluştur.

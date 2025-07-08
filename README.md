@@ -4,7 +4,8 @@
 
 
 ## in-app screenshot
-![3](https://github.com/user-attachments/assets/b7c9e038-b880-4abf-a325-906f4400add6)
+![3](https://github.com/user-attachments/assets/e552b097-abb8-4fb4-ac43-a79dde20b084)
+
 
 ## Login Screen 
 ![1](https://github.com/user-attachments/assets/a39e0bbc-7480-484c-9fe6-e74e79d57828)
